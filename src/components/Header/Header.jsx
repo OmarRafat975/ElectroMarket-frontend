@@ -21,7 +21,7 @@ export default function Header() {
           <hr className="absolute right-0 w-1 h-1 left-[52%] translate-x-[-50%] border-none rounded-full bg-gray-700" />
           <hr className="absolute right-0 w-16 h-1 border-none rounded-xl bg-gray-700" />
         </h1>
-        <p className="mt-4 leading-9 text-gray-700 p-5">
+        <p className="mt-4 leading-9 text-gray-700 p-5 w-full">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero tempora
           odit amet beatae quasi molestiae, temporibus quaerat debitis, cumque
           nulla nemo, aperiam sequi inventore voluptas corporis officia natus

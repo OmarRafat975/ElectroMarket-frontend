@@ -69,6 +69,11 @@ export default function Footer() {
         {/* Map Section */}
         <Map />
       </div>
+      <div>
+        <p className="py-5 text-sm text-center">
+          Copyright 2024&copy; horecamarkt.com - All Rights Reserved.
+        </p>
+      </div>
     </footer>
   );
 }

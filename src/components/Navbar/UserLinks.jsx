@@ -5,14 +5,28 @@ import {
   profileIcon,
   searchIcon,
 } from '../../assets/icons';
+import { useContext } from 'react';
+import { ShopContext } from '../../context/ShopContext';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 export default function UserLinks({ setIsActive }) {
+  const { setShowSearch } = useContext(ShopContext);
+  const location = useLocation();
+
   return (
     <div className="flex items-center gap-6">
       {/* Search */}
-      <button className="hover:text-blue-600">{searchIcon}</button>
+
+      {location.pathname.includes('products') && (
+        <button
+          onClick={() => setShowSearch((prev) => !prev)}
+          className="hover:text-blue-600"
+        >
+          {searchIcon}
+        </button>
+      )}
+
       {/* profile */}
       <div className="group relative">
         <button className="hover:text-blue-600 my-1">{profileIcon}</button>

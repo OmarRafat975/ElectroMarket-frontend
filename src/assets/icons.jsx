@@ -79,6 +79,40 @@ export const backIcon = (
   </svg>
 );
 
+export const dropDownIcon = (
+  <svg
+    className="w-5 h-5 pb-1"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m8.25 4.5 7.5 7.5-7.5 7.5"
+    />
+  </svg>
+);
+
+export const crossIcon = (
+  <svg
+    className="w-6 h-6"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 18 18 6M6 6l12 12"
+    />
+  </svg>
+);
+
 export const products = [
   {
     _id: '67460ca793cd395cfe75b151',
@@ -89,6 +123,9 @@ export const products = [
     images: ['product-1.jpeg', 'product-1-1.jpeg', 'product-1-2.jpeg'],
     brand: 'maker',
     price: 99,
+    category1: {
+      name: 'fridge',
+    },
     category: {
       name: 'fridge',
     },

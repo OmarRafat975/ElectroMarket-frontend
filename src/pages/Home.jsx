@@ -1,6 +1,6 @@
 import FeaturedProducts from '../components/FeaturedProducts/FeaturedProducts';
 import Header from '../components/Header/Header';
-import MainHeading from '../components/Header/MainHeading';
+import Title from '../components/Header/Title';
 import LatestProducts from '../components/LatestProducts/LatestProducts';
 import PaginationLinks from '../components/Product/PaginationLinks';
 
@@ -9,11 +9,11 @@ export default function Home() {
     <>
       <Header />
       <main className="bg-[#e3f2fd] pb-4">
+        <Title> Featured </Title>
         <div className="bg-white pb-4">
-          <MainHeading> Featured </MainHeading>
           <FeaturedProducts />
-          <MainHeading> Latest </MainHeading>
         </div>
+        <Title> Latest </Title>
         <LatestProducts />
         <PaginationLinks />
       </main>
