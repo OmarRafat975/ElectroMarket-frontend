@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ShopContext } from '../../context/ShopContext';
+import { ShopContext } from '../../context/ctxInit.js';
 import ProductCard from '../Product/ProductCard';
 
 export default function LatestProducts() {

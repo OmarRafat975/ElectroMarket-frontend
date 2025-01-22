@@ -5,11 +5,17 @@ export default function Sort({ sortType, setSortType }) {
     <select
       value={sortType}
       onChange={(e) => setSortType(e.target.value)}
-      className="border-2 border-[#8cd0fd8a] text-sm px-2 bg-transparent"
+      className="border-2 border-[#8cd0fd8a] text-sm px-2 bg-transparent hover:bg-[#8cd0fd8a]"
     >
-      <option value="relavent">Sort by: Relavent</option>
-      <option value="low-high">Sort by: Low to Hight</option>
-      <option value="high-low">Sort by: High to Low</option>
+      <option className=" bg-[#8cd0fd8a] " value="relavent">
+        Sort by: Relavent
+      </option>
+      <option className="bg-[#8cd0fd8a] " value="low-high">
+        Sort by: Low to Hight
+      </option>
+      <option className=" bg-[#8cd0fd8a] " value="high-low">
+        Sort by: High to Low
+      </option>
     </select>
   );
 }

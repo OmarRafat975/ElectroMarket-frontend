@@ -6,12 +6,12 @@ import {
   searchIcon,
 } from '../../assets/icons';
 import { useContext } from 'react';
-import { ShopContext } from '../../context/ShopContext';
+import { ShopContext } from '../../context/ctxInit.js';
 
 import { NavLink, useLocation } from 'react-router-dom';
 
 export default function UserLinks({ setIsActive }) {
-  const { setShowSearch } = useContext(ShopContext);
+  const { setShowSearch, cartItems } = useContext(ShopContext);
   const location = useLocation();
 
   return (
@@ -42,7 +42,7 @@ export default function UserLinks({ setIsActive }) {
       <NavLink to="/cart" className="group hover:text-blue-600 relative">
         {cartIcon}
         <p className="cart-num absolute right-[-8px] bottom-[-10px] w-4 text-center leading-4 group-hover:bg-blue-600 bg-black text-white aspect-square rounded-full text-[10px]">
-          10
+          {cartItems.length}
         </p>
       </NavLink>
       <button onClick={() => setIsActive(true)} className="sm:hidden">

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ShopContext } from '../../context/ShopContext';
+import { ShopContext } from '../../context/ctxInit.js';
 import EmblaCarousel from './EmblaCarousel';
 
 const OPTIONS = { dragFree: true, loop: true };

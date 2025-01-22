@@ -4,9 +4,10 @@ import Filter from '../components/Products/Filter';
 import Sort from '../components/Products/Sort';
 import Search from '../components/Navbar/Search';
 
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../context/ctxInit.js';
 import { useContext } from 'react';
 import { useFilter } from '../hooks/useFilter.js';
+import PaginationLinks from '../components/Products/PaginationLinks.jsx';
 
 export default function Products() {
   const { products, search, showSearch } = useContext(ShopContext);
@@ -22,7 +23,7 @@ export default function Products() {
     <>
       <Search />
       <main className=" sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-        <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 px-4 border-t">
+        <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 px-4 border-t mb-4">
           <Filter
             toggleCategory={toggleCategory}
             filterProducts={filterProducts}
@@ -30,7 +31,7 @@ export default function Products() {
           />
           {/* right side */}
           <div className="flex-1">
-            <div className="flex justify-between text-base sm:text-2xl mb-4">
+            <div className="flex justify-between text-base sm:text-2xl mb-4 gap-4">
               <PageTitle title="Products" />
               <Sort sortType={sortType} setSortType={setSortType} />
             </div>
@@ -39,6 +40,7 @@ export default function Products() {
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
+            <PaginationLinks />
           </div>
         </div>
       </main>

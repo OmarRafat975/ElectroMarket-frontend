@@ -1,15 +1,6 @@
-import { createContext, useState } from 'react';
+import { useState, useReducer } from 'react';
 import { products } from '../assets/icons';
-
-export const ShopContext = createContext({
-  products: [],
-  currency: '',
-  delivery_fee: 0,
-  search: '',
-  showSearch: false,
-  setSearch: () => {},
-  setShowSearch: () => {},
-});
+import { ShopContext, shoppingCartReducer } from './ctxInit';
 
 // eslint-disable-next-line react/prop-types
 export default function ShopContextProvider({ children }) {
@@ -17,13 +8,39 @@ export default function ShopContextProvider({ children }) {
   const delivery_fee = 10;
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
+  const [shoppingCartState, shoppingCartDispatch] = useReducer(
+    shoppingCartReducer,
+    {
+      items: [],
+    }
+  );
+
+  function handleAddItemToCart(id) {
+    shoppingCartDispatch({
+      type: 'ADD_ITEM',
+      payload: id,
+    });
+  }
+
+  function handleUpdateCartItemQuantity(productId, amount) {
+    shoppingCartDispatch({
+      type: 'UPDATE_ITEM',
+      payload: {
+        productId,
+        amount,
+      },
+    });
+  }
 
   const ctxValue = {
     products,
+    cartItems: shoppingCartState.items,
     currency,
     delivery_fee,
     search,
     showSearch,
+    handleAddItemToCart,
+    handleUpdateCartItemQuantity,
     setSearch,
     setShowSearch,
   };
