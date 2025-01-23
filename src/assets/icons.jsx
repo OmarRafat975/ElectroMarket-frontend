@@ -1,3 +1,7 @@
+import stripeLogo from './Stripe.png';
+
+export const logos = { stripeLogo };
+
 export const searchIcon = (
   <svg
     className="w-6 h-6"

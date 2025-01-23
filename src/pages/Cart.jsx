@@ -22,8 +22,7 @@ export default function Cart() {
         <div className="">
           {cartItems.length === 0 && (
             <p className="text-xl text-blue-500 text-center py-36">
-              {' '}
-              There is No Items in The Cart.{' '}
+              There is No Items in The Cart.
             </p>
           )}
           {cartItems.map((item) => (
@@ -82,7 +81,12 @@ export default function Cart() {
             <div className="w-full text-end">
               <button
                 onClick={() => navigate('/place-order')}
-                className="w-full bg-blue-600 text-white py-3 px-6 my-4 hover:bg-blue-700 transition duration-300 active:bg-blue-300"
+                className={`w-full  text-white py-3 px-6 my-4 transition duration-300 active:bg-blue-300 ${
+                  cartItems.length > 0
+                    ? 'bg-blue-600 hover:bg-blue-700'
+                    : 'bg-blue-300'
+                }`}
+                disabled={cartItems.length === 0}
               >
                 PROCEED TO CHECKOUT
               </button>

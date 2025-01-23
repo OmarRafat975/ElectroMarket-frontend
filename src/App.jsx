@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         element: <PlaceOrder />,
       },
       {
-        path: 'orders',
+        path: 'my-orders',
         element: <Orders />,
       },
     ],
