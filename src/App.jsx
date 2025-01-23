@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: 'placeOrder',
+        path: 'place-order',
         element: <PlaceOrder />,
       },
       {

@@ -9,11 +9,11 @@ export default function Home() {
     <>
       <Header />
       <main className="bg-[#e3f2fd] pb-4">
-        <Title> Featured </Title>
+        <Title className="text-4xl text-center mx-auto my-4"> Featured </Title>
         <div className="bg-white mb-4">
           <FeaturedProducts />
         </div>
-        <Title> Latest </Title>
+        <Title className="text-4xl text-center mx-auto my-4 "> Latest </Title>
         <LatestProducts />
         <PaginationLinks />
       </main>

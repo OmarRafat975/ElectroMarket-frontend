@@ -9,10 +9,20 @@ body {
   background-color: #e3f2fd;
 }
 
-.main-heading h2 {
+/* input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  appearance: textfield;
+} */
+
+/* .main-heading h2 {
   position: relative;
   text-transform: uppercase;
-  /* border: 2px black solid; */
+   border: 2px black solid; 
   font-family: 'Kanit', serif;
   font-weight: 600;
   font-style: normal;
@@ -23,7 +33,7 @@ body {
   transition: border-color 0.5s, color 0.5s, background-color 0.5s;
   z-index: 3;
   border-radius: 20px;
-  /* background-color: white; */
+   background-color: white; 
 }
 .main-heading h2::before {
   content: '';
@@ -72,7 +82,7 @@ body {
   background-color: #4299e1;
   color: white;
   transition-delay: 0.5s;
-}
+} */
 
 body {
   font-family: 'Outfit', serif;

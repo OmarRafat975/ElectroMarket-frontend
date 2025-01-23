@@ -32,7 +32,7 @@ export default function Products() {
           {/* right side */}
           <div className="flex-1">
             <div className="flex justify-between text-base sm:text-2xl mb-4 gap-4">
-              <PageTitle title="Products" />
+              <PageTitle title="PRODUCTS" />
               <Sort sortType={sortType} setSortType={setSortType} />
             </div>
             <div className="products grid gap-2 mb-8 s">

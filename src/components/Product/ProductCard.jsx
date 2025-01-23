@@ -7,7 +7,7 @@ export default function ProductCard({ product }) {
   const { currency, handleAddItemToCart } = useContext(ShopContext);
 
   return (
-    <div className="product w-fit h-fit p-3 mt-5 rounded">
+    <div className="product w-fit h-fit p-3 mt-5 rounded mx-auto">
       <Link to={`/product/${product.id}`}>
         <img
           src={'/' + product.image}

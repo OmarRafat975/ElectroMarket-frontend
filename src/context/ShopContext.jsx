@@ -22,6 +22,13 @@ export default function ShopContextProvider({ children }) {
     });
   }
 
+  function handleDeleteItem(productId) {
+    shoppingCartDispatch({
+      type: 'DELETE_ITEM',
+      payload: productId,
+    });
+  }
+
   function handleUpdateCartItemQuantity(productId, amount) {
     shoppingCartDispatch({
       type: 'UPDATE_ITEM',
@@ -41,6 +48,7 @@ export default function ShopContextProvider({ children }) {
     showSearch,
     handleAddItemToCart,
     handleUpdateCartItemQuantity,
+    handleDeleteItem,
     setSearch,
     setShowSearch,
   };

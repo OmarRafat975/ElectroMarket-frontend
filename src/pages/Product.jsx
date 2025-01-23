@@ -1,22 +1,18 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { Link, useParams } from 'react-router-dom';
 import { backHeadIcon } from '../assets/icons';
 import { ShopContext } from '../context/ctxInit.js';
 
 export default function Product() {
-  const { products, handleAddItemToCart, currency, cartItems } =
-    useContext(ShopContext);
+  const { products, handleAddItemToCart, currency } = useContext(ShopContext);
   const { productId } = useParams();
   const [selectedImage, setSelectedImage] = useState(0);
 
-  const [product] = products.filter((item) => item.id === productId);
+  const product = products.find((item) => item.id === productId);
 
   const productImages = product.images;
 
-  useEffect(() => {
-    console.log(cartItems);
-  }, [cartItems]);
   return (
     <>
       <main className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">

@@ -10,6 +10,7 @@ export const ShopContext = createContext({
   showSearch: false,
   handleAddItemToCart: () => {},
   handleUpdateCartItemQuantity: () => {},
+  handleDeleteItem: () => {},
   setSearch: () => {},
   setShowSearch: () => {},
 });
@@ -33,8 +34,7 @@ export function shoppingCartReducer(state, action) {
       const product = products.find((product) => product.id === action.payload);
       updatedItems.push({
         id: action.payload,
-        name: product.name,
-        price: product.price,
+        ...product,
         quantity: 1,
       });
     }
@@ -62,6 +62,20 @@ export function shoppingCartReducer(state, action) {
     } else {
       updatedItems[updatedItemIndex] = updatedItem;
     }
+
+    return {
+      ...state,
+      items: updatedItems,
+    };
+  }
+
+  if (action.type === 'DELETE_ITEM') {
+    const updatedItems = structuredClone(state.items);
+    const updatedItemIndex = updatedItems.findIndex((item) => {
+      return item.id === action.payload;
+    });
+
+    updatedItems.splice(updatedItemIndex, 1);
 
     return {
       ...state,
