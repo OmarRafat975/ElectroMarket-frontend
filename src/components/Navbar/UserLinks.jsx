@@ -8,7 +8,7 @@ import {
 import { useContext } from 'react';
 import { ShopContext } from '../../context/ctxInit.js';
 
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 export default function UserLinks({ setIsActive }) {
   const { setShowSearch, cartItems } = useContext(ShopContext);
@@ -32,7 +32,9 @@ export default function UserLinks({ setIsActive }) {
 
       {/* profile */}
       <div className="group relative">
-        <button className="hover:text-blue-600 my-1">{profileIcon}</button>
+        <Link to="/login" className="hover:text-blue-600 my-1">
+          {profileIcon}
+        </Link>
         <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-10 border-b border-x border-gray-600 ">
           <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-[#e3f2fd] text-gray-500 rounded">
             <p className="cursor-pointer hover:text-blue-600">My Profile</p>
