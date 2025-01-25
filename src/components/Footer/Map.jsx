@@ -6,7 +6,7 @@ export default function Map() {
 
   return (
     <>
-      <div className="h-64 bg-gray-700 rounded-lg overflow-hidden" id="map">
+      <div className="h-full bg-gray-700 rounded-lg overflow-hidden" id="map">
         <MapContainer center={position} zoom={15} className="h-full w-full">
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <Marker position={position}>

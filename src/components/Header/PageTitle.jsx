@@ -1,7 +1,12 @@
 /* eslint-disable react/prop-types */
-export default function PageTitle({ title }) {
+export default function PageTitle({ title, className }) {
   return (
-    <h1 className={'font-bold text-black  relative w-fit leading-relaxed'}>
+    <h1
+      className={
+        'font-bold text-black  relative w-fit leading-relaxed uppercase' +
+        className
+      }
+    >
       <hr
         className={
           'absolute right-0 w-1 h-1 left-[50%] translate-x-[-50%] border-none rounded-full bg-gray-700'
