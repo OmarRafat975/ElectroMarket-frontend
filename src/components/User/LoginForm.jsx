@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
 import { profileIcon } from '../../assets/icons';
 
-export default function LoginForm({ register }) {
-  function onSubmitHandler(e) {
-    e.preventDefault();
-  }
+export default function LoginForm({
+  register,
+  onSubmitHandler,
+  email,
+  setEmail,
+  password,
+  setPassword,
+}) {
   return (
     <form
       onSubmit={onSubmitHandler}
@@ -24,6 +28,8 @@ export default function LoginForm({ register }) {
           id="inputEmail1"
           className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-describedby="emailHelp"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
         />
         <div
           id="emailHelp"
@@ -46,6 +52,8 @@ export default function LoginForm({ register }) {
           type="password"
           id="inputPassword1"
           className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
         />
       </div>
 

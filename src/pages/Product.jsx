@@ -11,6 +11,10 @@ export default function Product() {
 
   const product = products.find((item) => item.id === productId);
 
+  if (!product) {
+    return <div>Loading...</div>; // Or a 404 message
+  }
+
   const productImages = product.images;
 
   return (
@@ -30,7 +34,7 @@ export default function Product() {
               {/* Main Image */}
               <div className="w-full h-96 rounded-lg overflow-hidden border border-[#8cd0fd8a] flex items-center justify-center">
                 <img
-                  src={`/${productImages[selectedImage]}`}
+                  src={productImages[selectedImage]}
                   alt={`Product Image ${selectedImage + 1}`}
                   className="w-full h-full object-contain"
                 />
@@ -49,8 +53,8 @@ export default function Product() {
                     } hover:border-blue-400 transition duration-300`}
                   >
                     <img
-                      src={`/${image}`}
-                      alt={`Thumbnail ${index + 1}`}
+                      src={image}
+                      alt={product.name}
                       className="w-full h-full object-cover"
                     />
                   </button>

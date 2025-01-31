@@ -10,7 +10,7 @@ export default function ProductCard({ product }) {
     <div className="product w-fit h-fit p-3 mt-5 rounded mx-auto">
       <Link to={`/product/${product.id}`}>
         <img
-          src={'/' + product.image}
+          src={product.images[0]}
           className="card-img-top w-full"
           alt={product.name}
         />

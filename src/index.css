@@ -7,6 +7,7 @@
 
 body {
   background-color: #e3f2fd;
+  font-family: 'Outfit', serif;
 }
 
 input::-webkit-outer-spin-button,
@@ -83,11 +84,6 @@ input[type='number'] {
   color: white;
   transition-delay: 0.5s;
 } */
-
-body {
-  font-family: 'Outfit', serif;
-  font-style: normal;
-}
 
 a.active {
   color: #2563eb;

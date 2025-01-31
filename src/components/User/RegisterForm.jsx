@@ -1,28 +1,40 @@
 /* eslint-disable react/prop-types */
 
-export default function RegisterForm({ register }) {
-  function onSubmitHandler(e) {
-    e.preventDefault();
-  }
+import { registerIcon } from '../../assets/icons';
+
+export default function RegisterForm({
+  register,
+  onSubmitHandler,
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  passwordConfirm,
+  setPasswordConfirm,
+}) {
   return (
     <>
       <form
         onSubmit={onSubmitHandler}
         className="sm:max-w-md sm:mx-auto bg-gray-800 p-6 my-14 sm:rounded-lg shadow-lg text-white"
       >
-        <h1 className="text-2xl font-bold mb-4 text-blue-500">
-          <i className="bi bi-person-add mr-2"></i> Sign Up
+        <h1 className="text-2xl font-bold mb-4 text-blue-500 flex items-center">
+          {registerIcon} Sign Up
         </h1>
 
         {/* Username Input */}
         <div className="mb-4">
-          <label htmlFor="inputUser" className="block text-sm font-medium mb-2">
+          <label htmlFor="name" className="block text-sm font-medium mb-2">
             Username
           </label>
           <input
             type="text"
-            id="inputUser"
+            id="name"
             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
 
@@ -38,6 +50,8 @@ export default function RegisterForm({ register }) {
             type="email"
             id="inputEmail1"
             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -53,6 +67,8 @@ export default function RegisterForm({ register }) {
             type="password"
             id="inputPassword1"
             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
@@ -68,6 +84,8 @@ export default function RegisterForm({ register }) {
             type="password"
             id="inputPassword2"
             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
           />
         </div>
 

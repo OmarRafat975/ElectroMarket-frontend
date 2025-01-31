@@ -19,7 +19,7 @@ export default function Orders() {
               <div className="flex items-start gap-6 text-sm">
                 <img
                   className="w-16 sm:w-20 h-16 sm:h-20 "
-                  src={`/${product.images[0]}`}
+                  src={product.images[0]}
                   alt={product.name}
                 />
                 <div>

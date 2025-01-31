@@ -8,14 +8,23 @@ import {
 import { useContext } from 'react';
 import { ShopContext } from '../../context/ctxInit.js';
 
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 export default function UserLinks({ setIsActive }) {
-  const { setShowSearch, cartItems } = useContext(ShopContext);
+  const { setShowSearch, cartItems, token, setToken, handleResetCart } =
+    useContext(ShopContext);
+  const navigate = useNavigate();
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const location = useLocation();
+
+  function handleLogout() {
+    navigate('/login');
+    localStorage.removeItem('token');
+    setToken('');
+    handleResetCart();
+  }
 
   return (
     <div className="flex items-center gap-6">
@@ -32,16 +41,31 @@ export default function UserLinks({ setIsActive }) {
 
       {/* profile */}
       <div className="group relative">
-        <Link to="/login" className="hover:text-blue-600 my-1">
+        <div
+          onClick={() => (token ? navigate('/') : navigate('/login'))}
+          className="hover:text-blue-600 my-1"
+        >
           {profileIcon}
-        </Link>
-        <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-10 border-b border-x border-gray-600 ">
-          <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-[#e3f2fd] text-gray-500 rounded">
-            <p className="cursor-pointer hover:text-blue-600">My Profile</p>
-            <p className="cursor-pointer hover:text-blue-600">Orders</p>
-            <p className="cursor-pointer hover:text-blue-600">Logout</p>
-          </div>
         </div>
+        {token && (
+          <div className="group-hover:block hidden absolute dropdown-menu  right-0 pt-4 z-10 border-b border-x border-gray-600 ">
+            <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-[#e3f2fd] text-gray-500 rounded">
+              <p className="cursor-pointer hover:text-blue-600">My Profile</p>
+              <p
+                onClick={() => navigate('/my-orders')}
+                className="cursor-pointer hover:text-blue-600"
+              >
+                Orders
+              </p>
+              <p
+                onClick={handleLogout}
+                className="cursor-pointer hover:text-blue-600"
+              >
+                Logout
+              </p>
+            </div>
+          </div>
+        )}
       </div>
       {/* Cart */}
       <NavLink to="/cart" className="group hover:text-blue-600 relative">

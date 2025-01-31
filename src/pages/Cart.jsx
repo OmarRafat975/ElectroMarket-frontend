@@ -13,6 +13,7 @@ export default function Cart() {
     handleDeleteItem,
     handleUpdateCartItemQuantity,
   } = useContext(ShopContext);
+
   return (
     <main className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <div className="border-t pt-14 ">
@@ -33,7 +34,7 @@ export default function Cart() {
               <div className="flex items-start gap-6">
                 <img
                   className="w-20 sm:w-36 h-16 sm:h-28"
-                  src={'/' + item.images[0]}
+                  src={item.images[0]}
                   alt={item.name}
                 />
                 <div className="">
