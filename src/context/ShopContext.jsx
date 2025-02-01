@@ -12,9 +12,7 @@ export default function ShopContextProvider({ children }) {
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
   const [products, setProducts] = useState([]);
-  const [token, setToken] = useState(
-    localStorage.getItem('token') ? localStorage.getItem('token') : ''
-  );
+  const [token, setToken] = useState('');
   const [shoppingCartState, shoppingCartDispatch] = useReducer(
     shoppingCartReducer,
     {
@@ -22,18 +20,42 @@ export default function ShopContextProvider({ children }) {
     }
   );
 
-  function handleAddItemToCart(id) {
+  async function handleAddItemToCart(productId) {
     shoppingCartDispatch({
       type: 'ADD_ITEM',
-      payload: id,
+      payload: productId,
     });
+
+    if (token) {
+      try {
+        await axios.patch(
+          backEndURL + '/cart/add',
+          { productId },
+          { headers: { authorization: 'Bearer ' + token } }
+        );
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    }
   }
 
-  function handleDeleteItem(productId) {
+  async function handleDeleteItem(productId) {
     shoppingCartDispatch({
       type: 'DELETE_ITEM',
       payload: productId,
     });
+
+    if (token) {
+      try {
+        await axios.patch(
+          backEndURL + '/cart/delete',
+          { productId },
+          { headers: { authorization: 'Bearer ' + token } }
+        );
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    }
   }
 
   function handleResetCart() {
@@ -42,7 +64,7 @@ export default function ShopContextProvider({ children }) {
     });
   }
 
-  function handleUpdateCartItemQuantity(productId, amount) {
+  async function handleUpdateCartItemQuantity(productId, amount) {
     shoppingCartDispatch({
       type: 'UPDATE_ITEM',
       payload: {
@@ -50,6 +72,18 @@ export default function ShopContextProvider({ children }) {
         amount,
       },
     });
+
+    if (token) {
+      try {
+        await axios.patch(
+          backEndURL + '/cart/update',
+          { productId, amount },
+          { headers: { authorization: 'Bearer ' + token } }
+        );
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    }
   }
 
   const getProducts = useCallback(
@@ -69,13 +103,35 @@ export default function ShopContextProvider({ children }) {
     [backEndURL]
   );
 
+  const getCartItems = useCallback(
+    async function getCartItems(token) {
+      try {
+        const response = await axios.get(backEndURL + '/cart', {
+          headers: { authorization: 'Bearer ' + token },
+        });
+        if (response.data.status === 'success') {
+          shoppingCartDispatch({
+            type: 'SET_CART',
+            payload: response.data.cartData,
+          });
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    },
+    [backEndURL]
+  );
+
   useEffect(() => {
     getProducts();
   }, [getProducts]);
 
   useEffect(() => {
-    localStorage.setItem('token', token);
-  }, [token]);
+    if (!token && localStorage.getItem('token')) {
+      setToken(localStorage.getItem('token'));
+      getCartItems(localStorage.getItem('token'));
+    }
+  }, [getCartItems, token]);
 
   function shoppingCartReducer(state, action) {
     if (action.type === 'ADD_ITEM') {
@@ -150,6 +206,13 @@ export default function ShopContextProvider({ children }) {
       return {
         ...state,
         items: [],
+      };
+    }
+
+    if (action.type === 'SET_CART') {
+      return {
+        ...state,
+        items: action.payload,
       };
     }
   }
