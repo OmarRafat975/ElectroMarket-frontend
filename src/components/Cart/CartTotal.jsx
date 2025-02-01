@@ -3,10 +3,9 @@ import { ShopContext } from '../../context/ctxInit.js';
 import Title from '../Header/Title.jsx';
 
 export default function CartTotal() {
-  const { cartItems, delivery_fee, currency } = useContext(ShopContext);
-  const totalItemsPrice = cartItems
-    .reduce((acc, item) => acc + item.price * item.quantity, 0)
-    .toFixed(2);
+  const { cartItems, delivery_fee, getTotalPrice, currency } =
+    useContext(ShopContext);
+  const totalItemsPrice = getTotalPrice(cartItems);
 
   return (
     <div className="w-full">

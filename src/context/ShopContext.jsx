@@ -20,6 +20,12 @@ export default function ShopContextProvider({ children }) {
     }
   );
 
+  function getTotalPrice(cartItems) {
+    return cartItems
+      .reduce((acc, item) => acc + item.price * item.quantity, 0)
+      .toFixed(2);
+  }
+
   async function handleAddItemToCart(productId) {
     shoppingCartDispatch({
       type: 'ADD_ITEM',
@@ -226,6 +232,7 @@ export default function ShopContextProvider({ children }) {
     token,
     search,
     showSearch,
+    getTotalPrice,
     handleAddItemToCart,
     handleUpdateCartItemQuantity,
     handleDeleteItem,

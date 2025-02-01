@@ -281,7 +281,5 @@ footer .container .contact li .info span {
   display: block;
 }
 footer .container #map {
-  width: 15rem;
-  height: 15rem;
   border: 3px solid #8cd0fd;
 }

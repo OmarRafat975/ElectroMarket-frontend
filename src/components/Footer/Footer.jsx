@@ -67,7 +67,7 @@ export default function Footer() {
         </div>
 
         {/* Map Section */}
-        <Map />
+        <Map className={'lg:w-[15rem] lg:h-[15rem]'} />
       </div>
       <div>
         <p className="py-5 text-sm text-center">

@@ -9,6 +9,7 @@ export const ShopContext = createContext({
   delivery_fee: 0,
   search: '',
   showSearch: false,
+  getTotalPrice: () => {},
   handleAddItemToCart: () => {},
   handleUpdateCartItemQuantity: () => {},
   handleDeleteItem: () => {},

@@ -1,9 +1,49 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ctxInit';
 import PageTitle from '../components/Header/PageTitle';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 export default function Orders() {
-  const { products, currency } = useContext(ShopContext);
+  const { currency, backEndURL, token } = useContext(ShopContext);
+  const [orders, setOrders] = useState([]);
+
+  function formatDate(date) {
+    if (!date || isNaN(new Date(date).getTime())) {
+      return ''; // Fallback for invalid dates
+    }
+    const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
+      dateStyle: 'long',
+    });
+    return dateTimeFormat.format(new Date(date));
+  }
+
+  const getOrders = useCallback(
+    async function getOrders() {
+      try {
+        if (token) {
+          const response = await axios.get(backEndURL + '/orders/user-orders', {
+            headers: { authorization: 'Bearer ' + token },
+          });
+
+          if (response.data.status === 'success') {
+            setOrders(response.data.ordersData);
+          } else {
+            toast.error(response.data.message);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.message);
+      }
+    },
+    [backEndURL, token]
+  );
+
+  useEffect(() => {
+    getOrders();
+  }, [getOrders]);
+
   return (
     <main className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <div className="border-t pt-16">
@@ -11,42 +51,68 @@ export default function Orders() {
           <PageTitle title="MY ORDERS" />
         </div>
         <div className="">
-          {products.slice(1, 4).map((product) => (
-            <div
-              className="py-4 border-y text-blue-600  flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-              key={product.id}
-            >
-              <div className="flex items-start gap-6 text-sm">
-                <img
-                  className="w-16 sm:w-20 h-16 sm:h-20 "
-                  src={product.images[0]}
-                  alt={product.name}
-                />
-                <div>
-                  <p className="sm:text-base font-medium">{product.name}</p>
-                  <div className="flex items-center  gap-3 mt-2 text-base text-gray-600">
-                    <p className="text-lg">
-                      {currency}
-                      {product.price}
-                    </p>
-                    <p>Quantity: 1</p>
-                  </div>
-                  <p className="mt-2">
-                    Date: <span className="text-gray-400 "> 25, Jul 2025</span>
-                  </p>
-                </div>
-              </div>
-              <div className="md:w-1/2 flex justify-between">
-                <div className="flex items-center gap-2">
-                  <p className="min-w-2 h-2 rounded-full bg-green-500"></p>
-                  <p className="text-sm md:text-base">Ready to ship</p>
-                </div>
-                <button className="border px-4 py-2 text-sm font-medium rounded-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors">
-                  Track Order
-                </button>
-              </div>
+          {orders.length === 0 && (
+            <div className="text-center my-[10rem] mx-auto text-2xl text-blue-600">
+              There Is No Orders Yet.
             </div>
-          ))}
+          )}
+          {orders.length > 0 &&
+            orders.map((order, index) => {
+              return (
+                <div
+                  key={index}
+                  className="border border-blue-500 mb-1 px-6 py-2 rounded shadow-lg last:mb-8"
+                >
+                  <p className="text-blue-600 text-2xl font-bold underline">
+                    Ordered ({formatDate(order[0].orderedDate)}):
+                  </p>
+                  {order.map((product) => (
+                    <div
+                      className="py-4 border-y text-blue-600  flex flex-col md:flex-row md:items-center md:justify-between gap-4 "
+                      key={product.id}
+                    >
+                      <div className="flex items-start gap-6 text-sm">
+                        <img
+                          className="w-16 sm:w-20 h-16 sm:h-20 "
+                          src={product.images[0]}
+                          alt={product.name}
+                        />
+                        <div>
+                          <p className="sm:text-base font-medium">
+                            {product.name}
+                          </p>
+                          <div className="flex items-center  gap-3 mt-2 text-base text-gray-600">
+                            <p className="text-lg">
+                              {currency}
+                              {product.price}
+                            </p>
+                            <p>Quantity: {product.quantity}</p>
+                          </div>
+                          <p className="mt-2">
+                            Date:
+                            <span className="text-gray-400 ">
+                              {' '}
+                              {formatDate(product.orderedDate)}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                      <div className="md:w-1/2 flex justify-between">
+                        <div className="flex items-center gap-2">
+                          <p className="min-w-2 h-2 rounded-full bg-green-500"></p>
+                          <p className="text-sm md:text-base">
+                            {product.state}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <button className="block border px-4 py-2 text-sm font-medium rounded-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors ml-auto mt-1">
+                    Track Order
+                  </button>
+                </div>
+              );
+            })}
         </div>
       </div>
     </main>
