@@ -2,7 +2,6 @@ import FeaturedProducts from '../components/FeaturedProducts/FeaturedProducts';
 import Header from '../components/Header/Header';
 import Title from '../components/Header/Title';
 import LatestProducts from '../components/LatestProducts/LatestProducts';
-import PaginationLinks from '../components/Products/PaginationLinks';
 
 export default function Home() {
   return (
@@ -15,7 +14,6 @@ export default function Home() {
         </div>
         <Title className="text-4xl text-center mx-auto my-4 "> Latest </Title>
         <LatestProducts />
-        <PaginationLinks />
       </main>
     </>
   );

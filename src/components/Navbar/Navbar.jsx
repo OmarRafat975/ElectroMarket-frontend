@@ -14,7 +14,7 @@ export default function Navbar() {
         to="/"
         className="font-bold text-blue-600 text-xl md:text-2xl xl:text-3xl "
       >
-        Horeca Market
+        Electro Market
       </Link>
       {/* Pages Links */}
       <ul className="hidden sm:flex gap-5 text-gray-800">

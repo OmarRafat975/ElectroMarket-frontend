@@ -16,12 +16,10 @@ export default function Contact() {
           <div className="flex flex-col justify-center items-start gap-6 md:flex-row md:justify-between">
             <div className="flex flex-col justify-center items-start gap-6">
               <p className="font-semibold text-xl text-gray-600">Our Store</p>
+              <p className="text-gray-500">Somewhere 99 A, 2256 AW Anywhere</p>
               <p className="text-gray-500">
-                Weerenweg 35 B, 1161 AG Zwanenburg
-              </p>
-              <p className="text-gray-500">
-                Tel: +31 (0)20 497 63 25 <br />
-                +31 (0)64 555 95 53 <br /> Email: admin@gmail.com
+                Tel: +00 (0)11 33 44 55 <br />
+                +00 (0)11 555 45 85 <br /> Email: admin@gmail.com
               </p>
             </div>
 

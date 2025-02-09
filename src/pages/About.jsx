@@ -1,4 +1,4 @@
-import aboutUsHero from '../assets/about-us-hero.jpeg'; // Main hero image
+import aboutUsHero from '../assets/about-us-hero.jpg'; // Main hero image
 import teamPhoto from '../assets/team-photo.jpeg'; // Team photo
 import equipmentPhoto from '../assets/equipmentPhoto.jpeg';
 import { qualityIcon, supportIcon, sustainabilityIcon } from '../assets/icons'; // Icon for quality

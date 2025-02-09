@@ -9,10 +9,13 @@ import Login from './pages/Login';
 import PlaceOrder from './pages/PlaceOrder';
 import Orders from './pages/Orders';
 import RootLayout from './pages/Root';
+import Verify from './pages/Verify';
+import ErrorElement from './components/Error/ErrorElement';
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <ErrorElement />,
     children: [
       {
         index: true,
@@ -49,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: 'my-orders',
         element: <Orders />,
+      },
+      {
+        path: 'verify',
+        element: <Verify />,
       },
     ],
   },

@@ -18,20 +18,43 @@ export default function PlaceOrder() {
     const data = Object.fromEntries(formData);
     const totalPrice = getTotalPrice(cartItems);
 
-    if (payment === 'cod') {
-      const response = await axios.post(
-        backEndURL + '/orders/cash',
-        { products: cartItems, address: data, totalPrice },
-        { headers: { authorization: 'Bearer ' + token } }
-      );
-      if (response.data.status === 'success') {
-        toast.success('Order Placed Successfully');
-        handleResetCart();
-        navigate('/my-orders');
-      } else {
-        toast.error(response.data.message);
-        return { enteredValues: { ...data } };
+    switch (payment) {
+      case 'cod': {
+        const response = await axios.post(
+          backEndURL + '/orders/cash',
+          { products: cartItems, address: data, totalPrice },
+          { headers: { authorization: 'Bearer ' + token } }
+        );
+        if (response.data.status === 'success') {
+          toast.success('Order Placed Successfully');
+          handleResetCart();
+          navigate('/my-orders');
+        } else {
+          toast.error(response.data.message);
+          return { enteredValues: { ...data } };
+        }
+        break;
       }
+
+      case 'stripe':
+        {
+          const responseStripe = await axios.post(
+            backEndURL + '/orders/stripe',
+            { products: cartItems, address: data, totalPrice },
+            { headers: { authorization: 'Bearer ' + token } }
+          );
+
+          if (responseStripe.data.status === 'success') {
+            toast.done('Order Placed!');
+            window.location.replace(responseStripe.data.sessionUrl);
+          } else {
+            toast.error(responseStripe.data.message);
+          }
+        }
+        break;
+
+      default:
+        break;
     }
   }
 
