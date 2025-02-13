@@ -1,12 +1,9 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { ShopContext } from '../context/ctxInit';
 import PageTitle from '../components/Header/PageTitle';
-import { toast } from 'react-toastify';
-import axios from 'axios';
 
 export default function Orders() {
-  const { currency, backEndURL, token } = useContext(ShopContext);
-  const [orders, setOrders] = useState([]);
+  const { currency, orders } = useContext(ShopContext);
 
   function formatDate(date) {
     if (!date || isNaN(new Date(date).getTime())) {
@@ -18,32 +15,6 @@ export default function Orders() {
     return dateTimeFormat.format(new Date(date));
   }
 
-  const getOrders = useCallback(
-    async function getOrders() {
-      try {
-        if (token) {
-          const response = await axios.get(backEndURL + '/orders/user-orders', {
-            headers: { authorization: 'Bearer ' + token },
-          });
-
-          if (response.data.status === 'success') {
-            setOrders(response.data.ordersData);
-          } else {
-            toast.error(response.data.message);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error(error.response.data.message);
-      }
-    },
-    [backEndURL, token]
-  );
-
-  useEffect(() => {
-    getOrders();
-  }, [getOrders]);
-
   return (
     <main className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <div className="border-t pt-16">
@@ -51,13 +22,13 @@ export default function Orders() {
           <PageTitle title="MY ORDERS" />
         </div>
         <div className="">
-          {orders.length === 0 && (
+          {(orders.orders.length === 0 || orders.orders[0] === null) && (
             <div className="text-center my-[10rem] mx-auto text-2xl text-blue-600">
               There Is No Orders Yet.
             </div>
           )}
-          {orders.length > 0 &&
-            orders.map((order, index) => {
+          {orders.orders.length > 0 &&
+            orders.orders.map((order, index) => {
               return (
                 <div
                   key={index}

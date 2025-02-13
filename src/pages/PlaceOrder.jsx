@@ -5,12 +5,12 @@ import Title from '../components/Header/Title';
 import { useNavigate } from 'react-router-dom';
 import { ShopContext } from '../context/ctxInit';
 import { useActionState } from 'react';
-import axios from 'axios';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { toast } from 'react-toastify';
 
 export default function PlaceOrder() {
-  const { cartItems, getTotalPrice, backEndURL, handleResetCart, token } =
-    useContext(ShopContext);
+  const axiosPrivate = useAxiosPrivate();
+  const { cartItems, getTotalPrice, handleResetCart } = useContext(ShopContext);
   const navigate = useNavigate();
   const [payment, setPayment] = useState('cod');
 
@@ -20,15 +20,16 @@ export default function PlaceOrder() {
 
     switch (payment) {
       case 'cod': {
-        const response = await axios.post(
-          backEndURL + '/orders/cash',
-          { products: cartItems, address: data, totalPrice },
-          { headers: { authorization: 'Bearer ' + token } }
-        );
+        const response = await axiosPrivate.post('/orders/cash', {
+          products: cartItems,
+          address: data,
+          totalPrice,
+        });
         if (response.data.status === 'success') {
           toast.success('Order Placed Successfully');
-          handleResetCart();
           navigate('/my-orders');
+          handleResetCart();
+          window.location.reload();
         } else {
           toast.error(response.data.message);
           return { enteredValues: { ...data } };
@@ -38,11 +39,11 @@ export default function PlaceOrder() {
 
       case 'stripe':
         {
-          const responseStripe = await axios.post(
-            backEndURL + '/orders/stripe',
-            { products: cartItems, address: data, totalPrice },
-            { headers: { authorization: 'Bearer ' + token } }
-          );
+          const responseStripe = await axiosPrivate.post('/orders/stripe', {
+            products: cartItems,
+            address: data,
+            totalPrice,
+          });
 
           if (responseStripe.data.status === 'success') {
             toast.done('Order Placed!');

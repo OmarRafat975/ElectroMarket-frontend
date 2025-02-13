@@ -1,24 +1,26 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoginForm from '../components/User/LoginForm';
 import RegisterForm from '../components/User/RegisterForm';
-import { ShopContext } from '../context/ctxInit';
+
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import axios from '../api/axios';
+import useAuth from '../hooks/useAuth';
 
 export default function Login() {
+  const navigate = useNavigate();
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const { backEndURL, setToken, token } = useContext(ShopContext);
+  const { auth, setAuth } = useAuth();
 
   async function onSubmitHandler(e) {
     try {
       e.preventDefault();
       if (isRegister) {
-        const response = await axios.post(backEndURL + '/users/register', {
+        const response = await axios.post('/users/register', {
           name,
           email,
           password,
@@ -26,21 +28,17 @@ export default function Login() {
         });
 
         if (response.data.status === 'success') {
-          setToken(response.data.token);
-          localStorage.setItem('token', response.data.token);
+          setAuth(response.data.token, response.data.name, 'LOGIN');
         } else {
           toast.error(response.data.message);
         }
       } else {
-        const response = await axios.post(backEndURL + '/users/login', {
+        const response = await axios.post('/users/login', {
           email,
           password,
         });
-
         if (response.data.status === 'success') {
-          setToken(response.data.token);
-          localStorage.setItem('token', response.data.token);
-          window.location.reload();
+          setAuth(response.data.token, response.data.name, 'LOGIN');
         } else {
           toast.error(response.data.message);
         }
@@ -51,13 +49,11 @@ export default function Login() {
     }
   }
 
-  const navigate = useNavigate();
-
   useEffect(() => {
-    if (token) {
+    if (auth.token) {
       navigate('/');
     }
-  }, [token, navigate]);
+  }, [auth, navigate]);
 
   return (
     <main className=" sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">

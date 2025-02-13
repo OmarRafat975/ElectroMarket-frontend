@@ -2,7 +2,7 @@ import Map from './Map';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-8 mt-8" id="footer">
+    <footer className="bg-gray-800 text-white py-8 mt-8 bottom-0" id="footer">
       <div className="container m-auto px-4 flex justify-between max-xl:flex-wrap">
         {/* Social Section */}
         <div className="mb-8 sm:w-[25%]">

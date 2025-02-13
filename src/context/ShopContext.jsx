@@ -1,10 +1,15 @@
 import { useState, useReducer, useEffect, useCallback } from 'react';
 import { ShopContext } from './ctxInit';
-import axios from 'axios';
+import axios from '.././api/axios';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { toast } from 'react-toastify';
+import shoppingCartReducer from './cartReducer';
+import authReducer from './authReducer';
+import ordersReducer from './ordersReducer';
 
 // eslint-disable-next-line react/prop-types
 export default function ShopContextProvider({ children }) {
+  const axiosPrivate = useAxiosPrivate();
   const currency = '$';
   const delivery_fee = 10;
   const backEndURL = import.meta.env.VITE_BACKEND_URL;
@@ -12,7 +17,12 @@ export default function ShopContextProvider({ children }) {
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
   const [products, setProducts] = useState([]);
-  const [token, setToken] = useState('');
+
+  const [authState, authDispatch] = useReducer(authReducer, {
+    token: undefined,
+    name: undefined,
+  });
+
   const [shoppingCartState, shoppingCartDispatch] = useReducer(
     shoppingCartReducer,
     {
@@ -20,100 +30,144 @@ export default function ShopContextProvider({ children }) {
     }
   );
 
-  function getTotalPrice(cartItems) {
-    return cartItems
-      .reduce((acc, item) => acc + item.price * item.quantity, 0)
-      .toFixed(2);
+  const [orders, ordersDispatch] = useReducer(ordersReducer, { orders: [] });
+
+  //////////////////////AUTH REDUCER/////////////////////////
+
+  const handleLoginOrRefresh = useCallback(async function handleLoginOrRefresh(
+    token,
+    name,
+    type
+  ) {
+    authDispatch({
+      type,
+      payload: { token, name },
+    });
+  },
+  []);
+
+  async function handleLogout() {
+    authDispatch({
+      type: 'LOGOUT',
+    });
   }
 
+  ///////////////////////REFRESH FN/////////////////////////
+
+  const refreshToken = useCallback(async () => {
+    try {
+      const response = await axios.get('/users/user/refresh', {
+        withCredentials: true,
+      });
+
+      if (response.data.status === 'success') {
+        handleLoginOrRefresh(
+          response.data.token,
+          response.data.name,
+          'REFRESH'
+        );
+      }
+    } catch (error) {
+      if (error) return;
+    }
+  }, [handleLoginOrRefresh]);
+
+  ////////////////////////////////////////CART REDUCER////////////////////////////////////////////
+
+  //-----------ADD ITEMS TO CART------------//
   async function handleAddItemToCart(productId) {
-    shoppingCartDispatch({
-      type: 'ADD_ITEM',
-      payload: productId,
-    });
-
-    if (token) {
-      try {
-        await axios.patch(
-          backEndURL + '/cart/add',
+    try {
+      if (authState.token) {
+        await axiosPrivate.patch(
+          '/cart/add',
           { productId },
-          { headers: { authorization: 'Bearer ' + token } }
+          { withCredentials: true }
         );
-      } catch (error) {
-        toast.error(error.response.data.message);
       }
+
+      shoppingCartDispatch({
+        type: 'ADD_ITEM',
+        payload: { id: productId, products },
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   }
 
+  //-----------UPDATE ITEMS IN CART------------//
+  async function handleUpdateCartItemQuantity(productId, amount) {
+    try {
+      if (authState.token) {
+        await axiosPrivate.patch(
+          '/cart/update',
+          { productId, amount },
+          {
+            withCredentials: true,
+          }
+        );
+      }
+
+      shoppingCartDispatch({
+        type: 'UPDATE_ITEM',
+        payload: {
+          productId,
+          amount,
+        },
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
+
+  //-----------DELETE ITEMS FROM CART------------//
   async function handleDeleteItem(productId) {
-    shoppingCartDispatch({
-      type: 'DELETE_ITEM',
-      payload: productId,
-    });
-
-    if (token) {
-      try {
-        await axios.patch(
-          backEndURL + '/cart/delete',
+    try {
+      if (authState.token) {
+        await axiosPrivate.patch(
+          '/cart/delete',
           { productId },
-          { headers: { authorization: 'Bearer ' + token } }
+          {
+            withCredentials: true,
+          }
         );
-      } catch (error) {
-        toast.error(error.response.data.message);
       }
+
+      shoppingCartDispatch({
+        type: 'DELETE_ITEM',
+        payload: productId,
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   }
 
+  //-----------CLEAR CART------------//
   function handleResetCart() {
     shoppingCartDispatch({
       type: 'RESET_CART',
     });
   }
 
-  async function handleUpdateCartItemQuantity(productId, amount) {
-    shoppingCartDispatch({
-      type: 'UPDATE_ITEM',
-      payload: {
-        productId,
-        amount,
-      },
-    });
+  ///////////////////////ORDERS REDUCER/////////////////////////////
 
-    if (token) {
-      try {
-        await axios.patch(
-          backEndURL + '/cart/update',
-          { productId, amount },
-          { headers: { authorization: 'Bearer ' + token } }
-        );
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    }
+  function setOrders(orders) {
+    ordersDispatch({ type: 'SET', payload: { orders } });
   }
 
-  const getProducts = useCallback(
-    async function getProducts() {
-      try {
-        const response = await axios.get(backEndURL + '/products');
+  ///////////////INIT GET ITEMS FN////////////////////
 
-        if (response.data.status === 'success') {
-          setProducts(response.data.data);
-        } else {
-          toast.error(response.data.message);
-        }
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    },
-    [backEndURL]
-  );
+  function getTotalPrice(cartItems) {
+    return cartItems
+      .reduce((acc, item) => acc + item.price * item.quantity, 0)
+      .toFixed(2);
+  }
 
+  //-----------GET CART ITEMS------------//
   const getCartItems = useCallback(
-    async function getCartItems(token) {
+    async function getCartItems() {
       try {
-        const response = await axios.get(backEndURL + '/cart', {
-          headers: { authorization: 'Bearer ' + token },
+        const response = await axiosPrivate.get('/cart', {
+          withCredentials: true,
         });
         if (response.data.status === 'success') {
           shoppingCartDispatch({
@@ -127,121 +181,84 @@ export default function ShopContextProvider({ children }) {
         toast.error(error.response.data.message);
       }
     },
-    [backEndURL]
+    [axiosPrivate]
   );
+  //-----------GET ORDERS------------//
+  const getOrders = useCallback(
+    async function getOrders() {
+      try {
+        const response = await axiosPrivate.get('/orders/user-orders');
 
+        if (response.data.status === 'success') {
+          setOrders(response.data.ordersData);
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.message);
+      }
+    },
+    [axiosPrivate]
+  );
+  //-----------GET PRODUCTS------------//
+  const getProducts = useCallback(async function getProducts() {
+    try {
+      const response = await axios.get('/products');
+
+      if (response.data.status === 'success') {
+        setProducts(response.data.data);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }, []);
+
+  //-------------TRY TO GET USER ON START
+  useEffect(() => {
+    refreshToken();
+  }, [refreshToken]);
+
+  //-------------IF USER GET CART ITEMS
+  useEffect(() => {
+    if (authState.token) {
+      getCartItems();
+    }
+  }, [authState.token, getCartItems]);
+  //-------------IF USER GET SAVED ORDERS
+  useEffect(() => {
+    if (authState.token) {
+      getOrders();
+    }
+  }, [authState.token, getOrders]);
+  //-------------GET PRODUCTS ON START
   useEffect(() => {
     getProducts();
   }, [getProducts]);
 
-  useEffect(() => {
-    if (!token && localStorage.getItem('token')) {
-      setToken(localStorage.getItem('token'));
-      getCartItems(localStorage.getItem('token'));
-    }
-  }, [getCartItems, token]);
-
-  function shoppingCartReducer(state, action) {
-    if (action.type === 'ADD_ITEM') {
-      const updatedItems = [...state.items];
-
-      const existingCartItemIndex = updatedItems.findIndex(
-        (cartItem) => cartItem.id === action.payload
-      );
-      const existingCartItem = updatedItems[existingCartItemIndex];
-
-      if (existingCartItem) {
-        const updatedItem = {
-          ...existingCartItem,
-          quantity: existingCartItem.quantity + 1,
-        };
-        updatedItems[existingCartItemIndex] = updatedItem;
-      } else {
-        const product = products.find(
-          (product) => product.id === action.payload
-        );
-        updatedItems.push({
-          ...product,
-          quantity: 1,
-        });
-      }
-
-      return {
-        ...state,
-        items: updatedItems,
-      };
-    }
-
-    if (action.type === 'UPDATE_ITEM') {
-      const updatedItems = [...state.items];
-      const updatedItemIndex = updatedItems.findIndex(
-        (item) => item.id === action.payload.productId
-      );
-
-      const updatedItem = {
-        ...updatedItems[updatedItemIndex],
-      };
-
-      updatedItem.quantity += action.payload.amount;
-
-      if (updatedItem.quantity <= 0) {
-        updatedItems.splice(updatedItemIndex, 1);
-      } else {
-        updatedItems[updatedItemIndex] = updatedItem;
-      }
-
-      return {
-        ...state,
-        items: updatedItems,
-      };
-    }
-
-    if (action.type === 'DELETE_ITEM') {
-      const updatedItems = structuredClone(state.items);
-      const updatedItemIndex = updatedItems.findIndex((item) => {
-        return item.id === action.payload;
-      });
-
-      updatedItems.splice(updatedItemIndex, 1);
-
-      return {
-        ...state,
-        items: updatedItems,
-      };
-    }
-
-    if (action.type === 'RESET_CART') {
-      return {
-        ...state,
-        items: [],
-      };
-    }
-
-    if (action.type === 'SET_CART') {
-      return {
-        ...state,
-        items: action.payload,
-      };
-    }
-  }
-
+  //---------------CONTEXT VALUES ASSIN
   const ctxValue = {
     products,
     cartItems: shoppingCartState.items,
     backEndURL,
     currency,
     delivery_fee,
-    token,
+    authState,
     search,
     showSearch,
+    orders,
+    handleLoginOrRefresh,
+    handleLogout,
     getTotalPrice,
     handleAddItemToCart,
     handleUpdateCartItemQuantity,
     handleDeleteItem,
     handleResetCart,
+    setOrders,
     setSearch,
     setShowSearch,
-    setToken,
   };
 
   return (
