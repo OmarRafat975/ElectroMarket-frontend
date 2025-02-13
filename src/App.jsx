@@ -12,10 +12,12 @@ import RootLayout from './pages/Root';
 import Verify from './pages/Verify';
 import ErrorElement from './components/Error/ErrorElement';
 import Profile from './pages/Profile.jsx';
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+
     errorElement: <ErrorElement />,
     children: [
       {

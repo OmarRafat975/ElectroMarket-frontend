@@ -5,7 +5,6 @@ import EmblaCarousel from './EmblaCarousel';
 const OPTIONS = { dragFree: true, loop: true };
 export default function FeaturedProducts() {
   const { products } = useContext(ShopContext);
-
   const featuredProducts = products.filter(
     (product) => product.isFeatured === true
   );
