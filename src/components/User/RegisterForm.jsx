@@ -13,6 +13,7 @@ export default function RegisterForm({
   setPassword,
   passwordConfirm,
   setPasswordConfirm,
+  loading,
 }) {
   return (
     <>
@@ -116,9 +117,10 @@ export default function RegisterForm({
         <div className="mb-3">
           <button
             type="submit"
+            disabled="loading"
             className="w-full px-4 py-2 border border-white rounded hover:bg-white hover:text-gray-800 transition duration-300"
           >
-            Sign Up
+            {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
         </div>
       </form>

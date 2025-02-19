@@ -15,9 +15,11 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const { auth, setAuth } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   async function onSubmitHandler(e) {
     try {
+      setLoading(true);
       e.preventDefault();
       if (isRegister) {
         const response = await axios.post('/users/register', {
@@ -29,8 +31,10 @@ export default function Login() {
 
         if (response.data.status === 'success') {
           setAuth(response.data.token, response.data.name, 'LOGIN');
+          setLoading(false);
         } else {
           toast.error(response.data.message);
+          setLoading(false);
         }
       } else {
         const response = await axios.post('/users/login', {
@@ -39,13 +43,15 @@ export default function Login() {
         });
         if (response.data.status === 'success') {
           setAuth(response.data.token, response.data.name, 'LOGIN');
+          setLoading(false);
         } else {
           toast.error(response.data.message);
+          setLoading(false);
         }
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      setLoading(false);
     }
   }
 
@@ -65,6 +71,7 @@ export default function Login() {
           setEmail={setEmail}
           password={password}
           setPassword={setPassword}
+          loading={loading}
         />
       )}
       {isRegister && (
@@ -79,6 +86,7 @@ export default function Login() {
           setPassword={setPassword}
           passwordConfirm={passwordConfirm}
           setPasswordConfirm={setPasswordConfirm}
+          loading={loading}
         />
       )}
     </main>

@@ -8,6 +8,7 @@ export default function LoginForm({
   setEmail,
   password,
   setPassword,
+  loading,
 }) {
   return (
     <form
@@ -75,9 +76,10 @@ export default function LoginForm({
       <div className="mt-3">
         <button
           type="submit"
+          disabled={loading}
           className="w-full px-4 py-2 border border-white rounded hover:bg-white hover:text-gray-800 transition duration-300"
         >
-          Sign In
+          {loading ? 'Signing In...' : 'Sign In'}
         </button>
       </div>
     </form>
