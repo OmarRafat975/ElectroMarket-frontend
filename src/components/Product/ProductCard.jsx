@@ -5,16 +5,18 @@ import { Link } from 'react-router-dom';
 /* eslint-disable react/prop-types */
 export default function ProductCard({ product }) {
   const { currency, handleAddItemToCart } = useContext(ShopContext);
+  let classCard =
+    'product sm:h-[30rem] p-3 mt-5 rounded mx-auto max-w-[20rem] ';
 
   return (
-    <div className="product w-fit h-fit p-3 mt-5 rounded mx-auto">
+    <div className={classCard}>
       <Link to={`/product/${product.id}`}>
         <img
           src={product.images[0]}
-          className="card-img-top w-full"
+          className="card-img-top w-fit"
           alt={product.name}
         />
-        <div className="border-t pt-5 mb-5">
+        <div className="border-t h-[5rem] mb-5">
           <h3 className="text-blue-500 text-xl font-semibold mb-2">
             {product.name}
           </h3>
@@ -29,7 +31,7 @@ export default function ProductCard({ product }) {
         >
           Buy
         </button>
-        <p className="text-lg font-bold mb-0">
+        <p className="flex items-center justify-between text-lg font-bold mb-2 h-[5rem]">
           {currency}
           {product.price}
         </p>

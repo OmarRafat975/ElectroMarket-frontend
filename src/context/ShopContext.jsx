@@ -207,7 +207,7 @@ export default function ShopContextProvider({ children }) {
       const response = await axios.get('/products');
 
       if (response.data.status === 'success') {
-        setProducts(response.data.data);
+        setProducts(response.data.products);
       } else {
         toast.error(response.data.message);
       }
