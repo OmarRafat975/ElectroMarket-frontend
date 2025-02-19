@@ -247,168 +247,36 @@ export const registerIcon = (
   </svg>
 );
 
-export const products = [
-  {
-    _id: '67460ca793cd395cfe75b151',
-    name: 'Product 1',
-    description: 'Product description',
-    richDescription: 'Product richDescription',
-    image: 'product-1.jpeg',
-    images: ['product-1.jpeg', 'product-1-1.jpeg', 'product-1-2.jpeg'],
-    brand: 'maker',
-    price: 99,
-    category1: {
-      name: 'fridge',
-    },
-    category: {
-      name: 'fridge',
-    },
-    countInStock: 2,
-    rating: 3.5,
-    numReviews: 5,
-    isFeatured: true,
-    dateCreated: '2024-11-26T18:00:07.203Z',
-    __v: 0,
-    id: '67460ca793cd395cfe75b151',
-  },
-  {
-    _id: '67461d0e32d0ae886e5d7d06',
-    name: 'Product 2',
-    description: 'Product description',
-    richDescription: 'Product richDescription',
-    image: 'product-2.jpeg',
-    images: ['product-2.jpeg', 'product-2-1.jpeg', 'product-2-2.jpeg'],
-    brand: 'maker',
-    price: 150,
-    category: {
-      name: 'stove',
-    },
-    countInStock: 1,
-    rating: 3.5,
-    numReviews: 10,
-    isFeatured: true,
-    dateCreated: '2024-11-26T19:10:06.273Z',
-    __v: 0,
-    id: '67461d0e32d0ae886e5d7d06',
-  },
-  {
-    _id: '67509d4a3986b6016bf73e37',
-    name: 'Product 3',
-    description: 'Product description',
-    richDescription: 'Product richDescription',
-    image: 'product-2.jpeg',
-    images: ['product-2.jpeg', 'product-2-1.jpeg', 'product-2-2.jpeg'],
-    brand: 'maker',
-    price: 150,
-    category: {
-      name: 'stove',
-    },
-    countInStock: 1,
-    rating: 3.5,
-    numReviews: 10,
-    isFeatured: true,
-    dateCreated: '2024-12-04T18:19:54.228Z',
-    __v: 0,
-    id: '67509d4a3986b6016bf73e37',
-  },
-  {
-    _id: '67509d7d3986b6016bf73e3b',
-    name: 'Product 3',
-    description: 'Product description',
-    richDescription: 'Product richDescription',
-    image: 'product-2.jpeg',
-    images: ['product-2.jpeg', 'product-2-1.jpeg', 'product-2-2.jpeg'],
-    brand: 'maker',
-    price: 150,
-    category: {
-      name: 'stove',
-    },
-    countInStock: 1,
-    rating: 3.5,
-    numReviews: 10,
-    isFeatured: true,
-    dateCreated: '2024-12-04T18:20:45.293Z',
-    __v: 0,
-    id: '67509d7d3986b6016bf73e3b',
-  },
-  {
-    _id: '67509d903986b6016bf73e3e',
-    name: 'Product 3',
-    description: 'Product description',
-    richDescription: 'Product richDescription',
-    image: 'product-2.jpeg',
-    images: ['product-2.jpeg', 'product-2-1.jpeg', 'product-2-2.jpeg'],
-    brand: 'maker',
-    price: 150,
-    category: {
-      name: 'stove',
-    },
-    countInStock: 1,
-    rating: 3.5,
-    numReviews: 10,
-    isFeatured: true,
-    dateCreated: '2024-12-04T18:21:04.829Z',
-    __v: 0,
-    id: '67509d903986b6016bf73e3e',
-  },
-  {
-    _id: '67509dad3986b6016bf73e42',
-    name: 'Product 3',
-    description: 'Product description',
-    richDescription: 'Product richDescription',
-    image: 'product-2.jpeg',
-    images: ['product-2.jpeg', 'product-2-1.jpeg', 'product-2-2.jpeg'],
-    brand: 'maker',
-    price: 150,
-    category: {
-      name: 'stove',
-    },
-    countInStock: 1,
-    rating: 3.5,
-    numReviews: 10,
-    isFeatured: true,
-    dateCreated: '2024-12-04T18:21:33.536Z',
-    __v: 0,
-    id: '67509dad3986b6016bf73e42',
-  },
-  {
-    _id: '67509ec6899abec3fbe1e8d8',
-    name: 'Product 3',
-    description: 'Product description',
-    richDescription: 'Product richDescription',
-    image: 'product-2.jpeg',
-    images: ['product-2.jpeg', 'product-2-1.jpeg', 'product-2-2.jpeg'],
-    brand: 'maker',
-    price: 150,
-    category: {
-      name: 'stove',
-    },
-    countInStock: 1,
-    rating: 3.5,
-    numReviews: 10,
-    isFeatured: true,
-    dateCreated: '2024-12-04T18:26:14.120Z',
-    __v: 0,
-    id: '67509ec6899abec3fbe1e8d8',
-  },
-  {
-    _id: '67509f262ff84abe18e6ab6b',
-    name: 'Product 3',
-    description: 'Product description',
-    richDescription: 'Product richDescription',
-    image: 'product-2.jpeg',
-    images: ['product-2.jpeg', 'product-2-1.jpeg', 'product-2-2.jpeg'],
-    brand: 'maker',
-    price: 150,
-    category: {
-      name: 'stove',
-    },
-    countInStock: 1,
-    rating: 3.5,
-    numReviews: 10,
-    isFeatured: true,
-    dateCreated: '2024-12-04T18:27:50.796Z',
-    __v: 0,
-    id: '67509f262ff84abe18e6ab6b',
-  },
-];
+export const leftIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="size-5 md:size-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+);
+
+export const rightIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="size-5 md:size-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m8.25 4.5 7.5 7.5-7.5 7.5"
+    />
+  </svg>
+);

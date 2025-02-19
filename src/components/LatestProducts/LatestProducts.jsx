@@ -9,7 +9,7 @@ export default function LatestProducts() {
     <>
       <section className="products grid gap-2 mb-8  p-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
         {products.map((product, index) => {
-          if (index < 12) {
+          if (index < 8) {
             return <ProductCard key={product.id} product={product} />;
           } else return;
         })}

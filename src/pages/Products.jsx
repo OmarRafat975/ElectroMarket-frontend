@@ -5,12 +5,46 @@ import Sort from '../components/Products/Sort';
 import Search from '../components/Navbar/Search';
 
 import { ShopContext } from '../context/ctxInit.js';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useFilter } from '../hooks/useFilter.js';
 import PaginationLinks from '../components/Products/PaginationLinks.jsx';
+const url = import.meta.env.VITE_BACKEND_URL;
+import { useParams } from 'react-router-dom';
+import Loading from '../components/Loading/Loading.jsx';
 
 export default function Products() {
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { pageNum } = useParams();
+
+  const pageNumber = pageNum || 1;
+
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [error, setError] = useState(false);
+  const [page, setPage] = useState(pageNumber);
+  const [pages, setPages] = useState(1);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(url + `/products?page=${page}`);
+
+        const { products: data, pages: totalPages } = await response.json();
+
+        setPages(totalPages);
+        setProducts(data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setError('Something went wrong');
+        return error.message;
+      }
+    };
+    fetchProducts();
+  }, [page]);
+
+  const { search, showSearch } = useContext(ShopContext);
   const {
     filterProducts,
     sortType,
@@ -35,12 +69,15 @@ export default function Products() {
               <PageTitle title="PRODUCTS" />
               <Sort sortType={sortType} setSortType={setSortType} />
             </div>
-            <div className="products grid gap-2 mb-8 s">
-              {filterProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            {loading && <Loading />}
+            <div className="products grid gap-2 mb-8 m-h-[100vh] w-full">
+              {!loading &&
+                filterProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
             </div>
-            <PaginationLinks />
+
+            <PaginationLinks page={page} pages={pages} changePage={setPage} />
           </div>
         </div>
       </main>
