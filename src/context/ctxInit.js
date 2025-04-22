@@ -10,6 +10,7 @@ export const ShopContext = createContext({
   delivery_fee: 0,
   search: '',
   showSearch: false,
+  loading: false,
   handleLoginOrRefresh: () => {},
   handleLogout: () => {},
   getTotalPrice: () => {},

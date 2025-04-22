@@ -17,34 +17,27 @@ export default function ShopContextProvider({ children }) {
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [authState, authDispatch] = useReducer(authReducer, {
     token: undefined,
     name: undefined,
   });
 
-  const [shoppingCartState, shoppingCartDispatch] = useReducer(
-    shoppingCartReducer,
-    {
-      items: [],
-    }
-  );
+  const [shoppingCartState, shoppingCartDispatch] = useReducer(shoppingCartReducer, {
+    items: [],
+  });
 
   const [orders, ordersDispatch] = useReducer(ordersReducer, { orders: [] });
 
   //////////////////////AUTH REDUCER/////////////////////////
 
-  const handleLoginOrRefresh = useCallback(async function handleLoginOrRefresh(
-    token,
-    name,
-    type
-  ) {
+  const handleLoginOrRefresh = useCallback(async function handleLoginOrRefresh(token, name, type) {
     authDispatch({
       type,
       payload: { token, name },
     });
-  },
-  []);
+  }, []);
 
   async function handleLogout() {
     authDispatch({
@@ -61,11 +54,7 @@ export default function ShopContextProvider({ children }) {
       });
 
       if (response.data.status === 'success') {
-        handleLoginOrRefresh(
-          response.data.token,
-          response.data.name,
-          'REFRESH'
-        );
+        handleLoginOrRefresh(response.data.token, response.data.name, 'REFRESH');
       }
     } catch (error) {
       if (error) return;
@@ -78,11 +67,7 @@ export default function ShopContextProvider({ children }) {
   async function handleAddItemToCart(productId) {
     try {
       if (authState.token) {
-        await axiosPrivate.patch(
-          '/cart/add',
-          { productId },
-          { withCredentials: true }
-        );
+        await axiosPrivate.patch('/cart/add', { productId }, { withCredentials: true });
       }
 
       shoppingCartDispatch({
@@ -157,14 +142,13 @@ export default function ShopContextProvider({ children }) {
   ///////////////INIT GET ITEMS FN////////////////////
 
   function getTotalPrice(cartItems) {
-    return cartItems
-      .reduce((acc, item) => acc + item.price * item.quantity, 0)
-      .toFixed(2);
+    return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
   }
 
   //-----------GET CART ITEMS------------//
   const getCartItems = useCallback(
     async function getCartItems() {
+      setLoading(true);
       try {
         const response = await axiosPrivate.get('/cart', {
           withCredentials: true,
@@ -179,6 +163,8 @@ export default function ShopContextProvider({ children }) {
         console.log(error);
 
         toast.error(error.response.data.message);
+      } finally {
+        setLoading(false);
       }
     },
     [axiosPrivate]
@@ -187,6 +173,7 @@ export default function ShopContextProvider({ children }) {
   const getOrders = useCallback(
     async function getOrders() {
       try {
+        setLoading(true);
         const response = await axiosPrivate.get('/orders/user-orders');
 
         if (response.data.status === 'success') {
@@ -196,12 +183,15 @@ export default function ShopContextProvider({ children }) {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     },
     [axiosPrivate]
   );
   //-----------GET PRODUCTS------------//
   const getProducts = useCallback(async function getProducts() {
+    setLoading(true);
     try {
       const response = await axios.get('/products');
 
@@ -212,6 +202,8 @@ export default function ShopContextProvider({ children }) {
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -248,6 +240,7 @@ export default function ShopContextProvider({ children }) {
     search,
     showSearch,
     orders,
+    loading,
     handleLoginOrRefresh,
     handleLogout,
     getTotalPrice,
@@ -260,7 +253,5 @@ export default function ShopContextProvider({ children }) {
     setShowSearch,
   };
 
-  return (
-    <ShopContext.Provider value={ctxValue}>{children}</ShopContext.Provider>
-  );
+  return <ShopContext.Provider value={ctxValue}>{children}</ShopContext.Provider>;
 }

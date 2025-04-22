@@ -1,18 +1,23 @@
 import { useContext } from 'react';
 import { ShopContext } from '../../context/ctxInit.js';
 import ProductCard from '../Product/ProductCard';
+import Loading from '../Loading/Loading.jsx';
 
 export default function LatestProducts() {
-  const { products } = useContext(ShopContext);
+  const { products, loading } = useContext(ShopContext);
 
   return (
     <>
       <section className="products grid gap-2 mb-8  p-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-        {products.map((product, index) => {
-          if (index < 8) {
-            return <ProductCard key={product.id} product={product} />;
-          } else return;
-        })}
+        {loading ? (
+          <Loading />
+        ) : (
+          products.map((product, index) => {
+            if (index < 5) {
+              return <ProductCard key={product.id} product={product} />;
+            } else return;
+          })
+        )}
       </section>
     </>
   );

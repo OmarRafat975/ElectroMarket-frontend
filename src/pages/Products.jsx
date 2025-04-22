@@ -45,24 +45,14 @@ export default function Products() {
   }, [page]);
 
   const { search, showSearch } = useContext(ShopContext);
-  const {
-    filterProducts,
-    sortType,
-    toggleCategory,
-    setFilterProducts,
-    setSortType,
-  } = useFilter(products, search, showSearch);
+  const { filterProducts, sortType, toggleCategory, setFilterProducts, setSortType } = useFilter(products, search, showSearch);
 
   return (
     <>
       <Search />
       <main className=" sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
         <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 px-4 border-t mb-4">
-          <Filter
-            toggleCategory={toggleCategory}
-            filterProducts={filterProducts}
-            setFilterProducts={setFilterProducts}
-          />
+          <Filter toggleCategory={toggleCategory} filterProducts={filterProducts} setFilterProducts={setFilterProducts} />
           {/* right side */}
           <div className="flex-1">
             <div className="flex justify-between text-base sm:text-2xl mb-4 gap-4">
@@ -71,10 +61,7 @@ export default function Products() {
             </div>
             {loading && <Loading />}
             <div className="products grid gap-2 mb-8 m-h-[100vh] w-full">
-              {!loading &&
-                filterProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+              {!loading && filterProducts.map((product) => <ProductCard key={product._id} product={product} />)}
             </div>
 
             <PaginationLinks page={page} pages={pages} changePage={setPage} />
